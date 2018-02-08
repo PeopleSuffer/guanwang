@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.app.dao.BusinessDao" >
+	<resultMap type="com.app.entiey.Business" id="BaseBusinessMap">
+		<id  property="id" column="id"/>
+		<result property="businessTitle" column="businessTitle"/>
+		<result property="businessContent" column="businessContent"/>
+		<result property="createTime" column="createTime"/>
+	</resultMap>
+	<!-- 查询所有数据 -->
+	<select id="getBusinessList" resultMap="BaseBusinessMap">
+		SELECT id,businessTitle,businessContent,createTime FROM business 
+		ORDER BY createTime DESC
+	</select>
+	<!-- 根据id返回单个的社团文件 -->
+	<select id="getBusinessById" parameterType="Integer" resultMap="BaseBusinessMap">
+		SELECT id,businessTitle,businessContent FROM business WHERE id=#{id}
+	</select>
+	<!-- 查询条数 -->
+	<!-- 
+	<select id="getClubFileNumber" resultType="Integer">
+		SELECT COUNT(id) FROM clubFile
+	</select>
+	 -->
+	<!-- 添加文件 -->
+	<insert id="addBusiness" parameterType="com.app.entiey.Business">
+		insert into business (businessTitle,businessContent,createTime)
+		values (#{businessTitle},#{businessContent},#{createTime})
+	</insert>
+	<!-- 修改社团文件 -->
+	<update id="updateBusinessById" parameterType="com.app.entiey.Business">
+		UPDATE business 
+		<set>
+		<if test="businessTitle != null and businessTitle !=''">businessTitle=#{businessTitle},</if>
+      	<if test="businessContent != null and businessContent !=''">businessContent=#{businessContent}</if>
+      	</set>
+      	where id=#{id}
+	</update>
+	<!-- 根据id删除单条社团文件 -->
+	<delete id="deleteBusinessById" parameterType="Integer">
+		DELETE from business where id=#{id}
+	</delete>
+</mapper>
